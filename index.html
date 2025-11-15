@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Me perdonas?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: linear-gradient(135deg,#ffd4e5 0%,#ffe8cc 100%);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #container {
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #444;
+      margin-bottom: 25px;
+      /* Se añade la transición para el H1, en caso de que su tamaño cambie */
+      transition: font-size 0.3s ease; 
+    }
+    #image {
+      width: 250px;
+      max-width: 80%;
+      margin-bottom: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+      position: relative;
+    }
+    .btn {
+      padding: 14px 30px;
+      font-size: 1.3em;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      color: white;
+      /* Transición para el tamaño del botón (font-size y padding) */
+      transition: background 0.3s ease, font-size 0.3s ease, padding 0.3s ease; 
+      white-space: nowrap; 
+    }
+    .yes { 
+        background: #74d680;
+        /* Estilos iniciales para el botón Sí */
+        font-size: 1.3em;
+        padding: 14px 30px;
+    }
+    .yes:hover { background: #5ec36b; }
+    .no  { 
+        background: #f28585; 
+        /* Estilos iniciales para el botón No */
+        font-size: 1.3em; 
+        padding: 14px 30px;
+    }
+    #finalImage {
+      width: 320px;
+      max-width: 90%;
+      border-radius: 20px;
+      margin-top: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1 id="questionText">¿Me perdonas? 🥺</h1>
+    <img id="image" src="imagen.png" alt="Imagen inicial">
+    <div class="buttons">
+      <button class="btn yes" id="yesBtn">Sí</button>
+      <button class="btn no"  id="noBtn">No</button>
+    </div>
+  </div>
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const container = document.getElementById('container');
+    const questionText = document.getElementById('questionText'); // Referencia al h1
+    
+    // Lista de textos para el H1 (la pregunta)
+    const questionTexts = [
+        "¿De verdad me vas a decir que no? 😥",
+        "Pero eso es que si o que no?",
+        "¡Pero si me esforcé mucho! 🥺",
+        "Anda, dime que sí, te prometo que seremos felices.",
+        "Te invito a comer lo que quieras si dices que sí ",
+        "¡Mi corazón se rompe con cada no! 💔",
+        "¿Un último intento? 🥺",
+        "¡Sólo hay una respuesta correcta y es SÍ! 😤",
+        "Di que sí, porfa 🙏",
+        "Podremos hacer todo lo que prometimos. ",
+        "Por favooooor di que siiiii"
+        // Puedes añadir más textos aquí
+    ];
+
+    let noCount = 0; // Contador de veces que se pulsa "No"
+
+    // Función que se ejecuta al presionar "No"
+    noBtn.addEventListener('click', () => {
+        noCount++;
+
+        // --- 1. Botón "Sí": Se hace más grande ---
+        const currentYesSize = parseFloat(yesBtn.style.fontSize) || 1.3;
+        const currentYesPaddingY = parseFloat(yesBtn.style.paddingTop) || 14;
+        const currentYesPaddingX = parseFloat(yesBtn.style.paddingLeft) || 30;
+        
+        // Aumenta el tamaño de la fuente y el padding del botón "Sí"
+        yesBtn.style.fontSize = (currentYesSize + 0.2) + 'em';
+        yesBtn.style.padding = (currentYesPaddingY + 2) + 'px ' + (currentYesPaddingX + 4) + 'px';
+        
+        // --- 2. Botón "No": Se hace un poco más pequeño ---
+        const currentNoSize = parseFloat(noBtn.style.fontSize) || 1.3;
+        const currentNoPaddingY = parseFloat(noBtn.style.paddingTop) || 14;
+        const currentNoPaddingX = parseFloat(noBtn.style.paddingLeft) || 30;
+
+        // Disminuye el tamaño de la fuente y el padding del botón "No"
+        // (Asegurándose de que no sea menor a un tamaño mínimo razonable, por ejemplo 0.5em)
+        if (currentNoSize > 0.5) {
+            noBtn.style.fontSize = (currentNoSize - 0.1) + 'em';
+            noBtn.style.padding = (currentNoPaddingY - 1) + 'px ' + (currentNoPaddingX - 2) + 'px';
+        }
+        
+        // --- 3. Pregunta Principal (H1): Cambia de texto ---
+        const textIndex = (noCount - 1) % questionTexts.length; // Usa el módulo para ciclar los textos
+        questionText.textContent = questionTexts[textIndex]; // Cambia el texto del H1
+    });
+
+    // Al presionar "Sí", muestra el texto final
+    yesBtn.addEventListener('click', () => {
+        container.innerHTML = `
+            <h1>¡${noCount > 0 ? 'Por fin' : 'Sii'}, yo sabía que me perdonarías!, Volveremos a estar así 🥰</h1>
+            
+            <img id="finalImage" src="imagen2.png" alt="Imagen de perdón">
+        `;
+    });
+  </script>
+</body>
+</html>
